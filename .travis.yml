@@ -11,8 +11,7 @@ before_deploy:
   - echo "Deploying $RELEASE_JAR_FILE (if tag)"
 deploy:
   provider: releases
-  api_key:
-    secure: "$DEPLOY_OAUTH_TOKEN"
+  api_key: "${DEPLOY_OAUTH_TOKEN}"
   file_glob: true
   file: ${RELEASE_JAR_FILE}
   on:
