@@ -1,10 +1,10 @@
-name: Build and test
+name: Validate, build and push
 
 on:
   push:
 
 jobs:
-  test-and-build:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repository
@@ -19,7 +19,13 @@ jobs:
       - name: Validate facet configuration
         run: ./config/script/validate.sh
 
+  build:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
 # BUILD PREP
+      - name: Check out the repository
+        uses: actions/checkout@v6
       - name: Set up JDK 21 for x64
         uses: actions/setup-java@v5
         with:
@@ -33,13 +39,16 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-
 # BUILD
       - name: Maven build Java project
         run: ./build.sh -B --settings .maven-settings.xml
       - name: Compile value maps
         run: ./value-maps/script/build.sh
-            
 
-#       after_success:
-#        - value-maps/script/push-changes.sh
+  push:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+# PUSH
+      - name: Push value map changes
+        run: ./value-maps/script/push-changes.sh
