@@ -3,25 +3,25 @@ set -e
 
 MAPS_DIR=$(dirname "$0")/..
 
-if [[ "$TRAVIS_TAG" ]]; then
-	echo "Skipping pushing of changes since we are on a tag"
+if [[ "$GITHUB_REF_TYPE" != 'branch' ]]; then
+	echo "Skipping pushing of changes since we are not on a branch"
 	exit 0
 fi
 
 if [[ `git status --porcelain "${MAPS_DIR}"` ]]; then
 
-	if [[ "$TRAVIS_BRANCH" ]]; then
-		if [ "$TRAVIS_BRANCH" = "development" ] \
-			|| [ "$TRAVIS_BRANCH" = "beta" ] \
-			|| [ "$TRAVIS_BRANCH" = "master" ]
+	if [[ "$GITHUB_REF_NAME" ]]; then
+		if [ "$GITHUB_REF_NAME" = "development" ] \
+			|| [ "$GITHUB_REF_NAME" = "beta" ] \
+			|| [ "$GITHUB_REF_NAME" = "master" ]
 		then
-			echo "Will try to commit and push changes on '${TRAVIS_BRANCH}' branch"
+			echo "Will try to commit and push changes on '${GITHUB_REF_NAME}' branch"
 		else
-			echo "Branch '${TRAVIS_BRANCH}' is not configured for auto commit and push"
+			echo "Branch '${GITHUB_REF_NAME}' is not configured for auto commit and push"
 			exit 0
 		fi
 	else
-		echo "TRAVIS_BRANCH not set; will not commit and push changes"
+		echo "GITHUB_REF_NAME not set; will not commit and push changes"
 		exit 0
 	fi
 
@@ -40,10 +40,10 @@ if [[ `git status --porcelain "${MAPS_DIR}"` ]]; then
 		git config user.name "$GIT_COMMIT_USER_NAME"
 	fi
 	
-	git checkout "${TRAVIS_BRANCH}"
+	git checkout "${GITHUB_REF_NAME}"
 	
 	#commit
-	git commit "${MAPS_DIR}" -m "Automatic commit of built changes in value maps (Travis build ${TRAVIS_BUILD_NUMBER})"
+	git commit "${MAPS_DIR}" -m "Automatic commit of built changes in value maps (GitHub job ${GITHUB_JOB})"
 	
 	#push
 	URL=`git remote get-url origin`
