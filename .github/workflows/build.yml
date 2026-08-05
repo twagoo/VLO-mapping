@@ -19,7 +19,7 @@ jobs:
       - name: Validate facet configuration
         run: ./config/script/validate.sh
 
-  build:
+  build-and-push-changes:
     needs: validate
     runs-on: ubuntu-latest
     steps:
@@ -44,11 +44,6 @@ jobs:
         run: ./build.sh -B --settings .maven-settings.xml
       - name: Compile value maps
         run: ./value-maps/script/build.sh
-
-  push:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-# PUSH
+# PUSH CHANGES
       - name: Push value map changes
         run: ./value-maps/script/push-changes.sh
