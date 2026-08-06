@@ -187,3 +187,5 @@
 "~^\(aad\).+","!",,"Arbeitsgemeinschaft Alte Drucke (aad) values",,,
 "~^Application\/.+","!",,"Mime types",,,
 "~^Text\/.+","!",,"Mime types",,,
+"123TEST123","!",,"test! Don't merge this!",,,
+"123TEST456","!",,"test! Don't merge this!",,,
