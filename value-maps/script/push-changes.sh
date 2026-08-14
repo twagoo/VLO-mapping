@@ -17,6 +17,7 @@ if [[ `git status --porcelain "${MAPS_DIR}"` ]]; then
 			|| [ "$GITHUB_REF_NAME" = "gh-actions-push-test" ]
 		then
 			echo "Will try to commit and push changes on '${GITHUB_REF_NAME}' branch"
+			
 		else
 			echo "Branch '${GITHUB_REF_NAME}' is not configured for auto commit and push"
 			exit 0
@@ -30,6 +31,8 @@ if [[ `git status --porcelain "${MAPS_DIR}"` ]]; then
 		echo "Error: GH_TOKEN and/or GH_USER not set"
 		exit 1
 	fi
+		
+	git config --global user.name "clarin-deploy"
 
 	echo "Committing changes"
 	
