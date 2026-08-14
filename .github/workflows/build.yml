@@ -2,6 +2,10 @@ name: Validate, build and push
 
 on:
   push:
+  
+env:
+  GH_USER: ${{ secrets.GH_USER }}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
   validate:
