@@ -13,7 +13,8 @@ if [[ `git status --porcelain "${MAPS_DIR}"` ]]; then
 	if [[ "$GITHUB_REF_NAME" ]]; then
 		if [ "$GITHUB_REF_NAME" = "development" ] \
 			|| [ "$GITHUB_REF_NAME" = "beta" ] \
-			|| [ "$GITHUB_REF_NAME" = "master" ]
+			|| [ "$GITHUB_REF_NAME" = "master" ] \
+			|| [ "$GITHUB_REF_NAME" = "gh-actions-push-test" ]
 		then
 			echo "Will try to commit and push changes on '${GITHUB_REF_NAME}' branch"
 		else
